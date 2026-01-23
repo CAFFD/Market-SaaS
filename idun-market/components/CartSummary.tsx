@@ -4,9 +4,19 @@ import { useCart } from '@/store/useCart'
 import { ShoppingBag } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export function CartSummary() {
+    const [mounted, setMounted] = useState(false)
     const { totalPrice, totalItems } = useCart()
+    
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted) return null
+
+
     const total = totalPrice()
     const count = totalItems()
     

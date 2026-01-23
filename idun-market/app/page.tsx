@@ -76,7 +76,7 @@ export default async function Home() {
 
 function ShoppingLink() {
     return (
-        <Link href="/cart" className="p-2 text-gray-600 hover:text-emerald-600 transition-colors">
+        <Link href="/checkout" className="p-2 text-gray-600 hover:text-emerald-600 transition-colors">
             <ShoppingCart size={24} />
         </Link>
     )

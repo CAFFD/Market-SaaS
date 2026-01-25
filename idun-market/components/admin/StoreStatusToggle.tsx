@@ -34,23 +34,18 @@ export function StoreStatusToggle({ initialStatus, storeId }: StoreStatusToggleP
     }
 
     return (
-        <div className="flex items-center gap-4 bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
-            <div className={`p-2 rounded-full ${isOpen ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'}`}>
-                <Store size={20} />
-            </div>
-            
-            <div className="flex flex-col">
-                <span className="text-xs text-gray-400 font-semibold uppercase tracking-wide">Status da Loja</span>
-                <span className={`font-bold ${isOpen ? 'text-emerald-600' : 'text-red-500'}`}>
-                    {isOpen ? 'ABERTA' : 'FECHADA'}
-                </span>
-            </div>
+        <div className={`flex items-center gap-3 px-4 py-2 rounded-full shadow-sm transition-colors border ${
+            isOpen ? 'bg-emerald-50 border-emerald-100' : 'bg-red-50 border-red-100'
+        }`}>
+            <span className={`text-sm font-bold ${isOpen ? 'text-emerald-700' : 'text-red-700'}`}>
+                {isOpen ? 'LOJA ABERTA' : 'LOJA FECHADA'}
+            </span>
 
             <button
                 onClick={handleToggle}
                 disabled={loading}
-                className={`ml-2 relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${
-                    isOpen ? 'bg-emerald-500' : 'bg-gray-200'
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${
+                    isOpen ? 'bg-emerald-500' : 'bg-gray-300'
                 }`}
             >
                 <span

@@ -51,15 +51,16 @@ create table public.orders (
   id uuid default uuid_generate_v4() primary key,
   store_id uuid references public.stores(id) on delete cascade not null,
   customer_name text not null,
-  customer_address text, -- ADICIONADO: Endereço do cliente
+  customer_phone text, -- NOVO: Telefone do Cliente para notificações
+  customer_address text,
   total_amount numeric(10,2) not null,
-  items_json jsonb, -- ALTERADO: Removido 'not null' (agora é opcional/legado)
+  items_json jsonb, -- Nullable (Legado/Backup)
   payment_method text,
-  status text default 'pending', -- ADICIONADO: Status do pedido
+  status text default 'pending',
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
-create table public.order_items ( -- ADICIONADO: Tabela de Itens
+create table public.order_items (
   id uuid default uuid_generate_v4() primary key,
   order_id uuid references public.orders(id) on delete cascade not null,
   product_name text not null,
@@ -73,7 +74,7 @@ alter table public.stores enable row level security;
 alter table public.products enable row level security;
 alter table public.categories enable row level security;
 alter table public.orders enable row level security;
-alter table public.order_items enable row level security; -- ADICIONADO
+alter table public.order_items enable row level security;
 
 -- Policies (Lojas)
 create policy "Lojas públicas para leitura" on public.stores for select using (true);
@@ -86,10 +87,10 @@ create policy "Dono gerencia produtos" on public.products for all using (auth.ui
 -- Policies (Pedidos)
 create policy "Clientes criam pedidos" on public.orders for insert with check (true);
 create policy "Dono vê pedidos" on public.orders for select using (auth.uid() = store_id);
+create policy "Dono atualiza status do pedido" on public.orders for update using (auth.uid() = store_id); -- NOVO: Permite update de status
 
--- Policies (Itens do Pedido) -- ADICIONADO
+-- Policies (Itens do Pedido)
 create policy "Clientes inserem itens" on public.order_items for insert with check (true);
-
 create policy "Dono vê itens do pedido" on public.order_items for select using (
   exists (
     select 1 from public.orders

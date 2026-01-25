@@ -40,7 +40,7 @@ export default function CheckoutPage() {
             // Tentamos pegar o store_id do primeiro item do carrinho (assumindo pedido de loja única)
             const firstItemStoreId = items[0]?.store_id || null
 
-            const { orderId, error } = await createOrder({
+            const { orderId, whatsappNumber, error } = await createOrder({
                 customer_name: name,
                 customer_address: address,
                 payment_method: paymentMethod,
@@ -76,8 +76,9 @@ ${itemsList}
 *Total: ${totalFormatted}*`
 
             const encodedMessage = encodeURIComponent(message)
-            const whatsappNumber = '5511999999999' // TODO: Pegar do banco de dados ou variável de ambiente
-            const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`
+            // Usa o número retornado do banco ou o fallback (caso a loja não tenha configurado)
+            const targetNumber = whatsappNumber || '5511999999999' 
+            const url = `https://wa.me/${targetNumber}?text=${encodedMessage}`
 
             // 3. Limpar Carrinho e Redirecionar
             items.forEach(item => removeItem(item.id)) // Limpa items um por um ou implementar clearCart no store

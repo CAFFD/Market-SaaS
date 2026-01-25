@@ -52,10 +52,50 @@ export async function createOrder(orderData: OrderData, items: { id: string, nam
 
         if (itemsError) throw itemsError
 
-        return { orderId, error: null }
+        // 4. Buscar WhatsApp da Loja (Se tiver store_id)
+        let whatsappNumber = null
+        if (orderData.store_id) {
+            const { data: store } = await supabase
+                .from('stores')
+                .select('whatsapp_number')
+                .eq('id', orderData.store_id)
+                .single()
+            
+            if (store) whatsappNumber = store.whatsapp_number
+        }
+
+        return { orderId, whatsappNumber, error: null }
 
     } catch (error: any) {
         console.error('Erro ao processar pedido:', error)
-        return { orderId: null, error: error.message || 'Erro desconhecido' }
+        return { orderId: null, whatsappNumber: null, error: error.message || 'Erro desconhecido' }
     }
+}
+
+export async function getOrders(storeId?: string) {
+    let query = supabase
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+    // Se tiver store_id, filtra por ele (Futuro: para multi-tenancy real)
+    // Por enquanto, como o Supabase é client-side e RLS pode filtrar pelo user, 
+    // ou se o dev quiser filtrar explicitamente:
+    // if (storeId) {
+    //     query = query.eq('store_id', storeId)
+    // }
+
+    const { data, error } = await query
+    if (error) throw error
+    return data
+}
+
+export async function updateOrderStatus(orderId: string, status: string) {
+    const { error } = await supabase
+        .from('orders')
+        .update({ status })
+        .eq('id', orderId)
+    
+    if (error) throw error
+    return true
 }

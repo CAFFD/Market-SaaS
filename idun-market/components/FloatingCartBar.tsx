@@ -6,8 +6,8 @@ import { ChevronRight, ShoppingBag } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 export function FloatingCartBar() {
-    const { items } = useCart()
-    const router = useRouter()
+    const { items, openCart } = useCart()
+    // const router = useRouter() // Not needed anymore
 
     if (items.length === 0) return null
 
@@ -20,7 +20,7 @@ export function FloatingCartBar() {
     }).format(totalPrice)
 
     const handleOpenCart = () => {
-        router.push('/checkout')
+        openCart()
     }
 
     return (

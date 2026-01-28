@@ -23,12 +23,20 @@ interface CartState {
     clearCart: () => void
     totalPrice: () => number
     totalItems: () => number
+    isCartOpen: boolean
+    openCart: () => void
+    closeCart: () => void
+    toggleCart: () => void
 }
 
 export const useCart = create<CartState>()(
     persist(
         (set, get) => ({
             items: [],
+            isCartOpen: false,
+            openCart: () => set({ isCartOpen: true }),
+            closeCart: () => set({ isCartOpen: false }),
+            toggleCart: () => set((state) => ({ isCartOpen: !state.isCartOpen })),
             addItem: (product) => {
                 const currentItems = get().items
                 const existingItem = currentItems.find((item) => item.id === product.id)

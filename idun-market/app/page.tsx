@@ -5,6 +5,7 @@ import { headers } from 'next/headers'
 import Link from 'next/link'
 import { ShoppingCart } from 'lucide-react'
 import { FloatingCartBar } from '@/components/FloatingCartBar'
+import { CartSheet } from '@/components/CartSheet'
 
 // Fetch data on server
 async function getProducts() {
@@ -79,6 +80,7 @@ export default async function Home() {
 
             {/* Floating Cart Footer */}
             <FloatingCartBar />
+            <CartSheet />
         </main>
     )
 }

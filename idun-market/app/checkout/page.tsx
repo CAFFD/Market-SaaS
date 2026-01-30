@@ -8,6 +8,7 @@ import { ArrowLeft, MapPin, User, Phone, CheckCircle2, Circle, Smartphone, Credi
 import Link from 'next/link'
 import { StepCard } from '@/components/checkout/StepCard'
 import { OrderSummary } from '@/components/checkout/OrderSummary'
+import { Loader2 } from 'lucide-react'
 
 // Icons mapping for payment methods
 const PaymentIcons = {
@@ -137,10 +138,10 @@ ${itemsList}
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-20">
+        <div className="min-h-screen bg-gray-50 pb-32 lg:pb-0">
             {/* Header */}
             <header className="bg-white border-b border-gray-200 sticky top-0 z-10 p-4 shadow-sm mb-8">
-                <div className="container mx-auto max-w-6xl flex items-center gap-4">
+                <div className="container mx-auto max-w-5xl px-4 lg:px-8 flex items-center gap-4">
                     <Link href="/" className="text-gray-600 hover:text-gray-900 transition-colors">
                         <ArrowLeft size={24} />
                     </Link>
@@ -148,7 +149,17 @@ ${itemsList}
                 </div>
             </header>
 
-            <main className="container mx-auto max-w-6xl px-4">
+            <main className="container mx-auto max-w-5xl px-4 lg:px-8">
+                {/* Mobile Top Summary (No Button) */}
+                <div className="lg:hidden mb-6">
+                    <OrderSummary 
+                        onCheckout={handleCheckout} 
+                        loading={loading}
+                        canCheckout={currentStep === 2}
+                        hideButton={true}
+                    />
+                </div>
+
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                     
                     {/* Left Column: Steps */}
@@ -169,23 +180,23 @@ ${itemsList}
                                 </div>
                             }
                         >
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
                                 <div className="md:col-span-2">
-                                    <label className="block text-base font-medium text-gray-700 mb-2 flex items-center gap-2">
-                                        <User size={18} /> Nome Completo
+                                    <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                        <User size={16} /> Nome Completo
                                     </label>
                                     <input
                                         name="name"
                                         value={formData.name}
                                         onChange={handleInputChange}
                                         placeholder="Como você se chama?"
-                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-12 text-base placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
+                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-11 md:h-12 text-base text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
                                     />
                                 </div>
                                 
                                 <div className="md:col-span-2">
-                                    <label className="block text-base font-medium text-gray-700 mb-2 flex items-center gap-2">
-                                        <Phone size={18} /> Celular / WhatsApp
+                                    <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                        <Phone size={16} /> Celular / WhatsApp
                                     </label>
                                     <input
                                         name="phone"
@@ -193,64 +204,64 @@ ${itemsList}
                                         value={formData.phone}
                                         onChange={handleInputChange}
                                         placeholder="(00) 00000-0000"
-                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-12 text-base placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
+                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-11 md:h-12 text-base text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
                                     />
                                 </div>
 
-                                <div className="md:col-span-2 border-t border-gray-100 my-2 pt-4">
+                                <div className="md:col-span-2 border-t border-gray-100 my-1 pt-4">
                                     <h4 className="font-bold text-lg text-gray-900 mb-4 flex items-center gap-2">
                                         <MapPin size={20} className="text-emerald-600"/> Endereço de Entrega
                                     </h4>
                                 </div>
 
                                 <div>
-                                    <label className="block text-base font-medium text-gray-700 mb-2">CEP</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">CEP</label>
                                     <input
                                         name="cep"
                                         value={formData.cep}
                                         onChange={handleInputChange}
                                         placeholder="00000-000"
-                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-12 text-base placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
+                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-11 md:h-12 text-base text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-base font-medium text-gray-700 mb-2">Bairro</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Bairro</label>
                                     <input
                                         name="district"
                                         value={formData.district}
                                         onChange={handleInputChange}
                                         placeholder="Seu bairro"
-                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-12 text-base placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
+                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-11 md:h-12 text-base text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <label className="block text-base font-medium text-gray-700 mb-2">Endereço (Rua/Av)</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Endereço (Rua/Av)</label>
                                     <input
                                         name="address"
                                         value={formData.address}
                                         onChange={handleInputChange}
                                         placeholder="Nome da rua"
-                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-12 text-base placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
+                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-11 md:h-12 text-base text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-base font-medium text-gray-700 mb-2">Número</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Número</label>
                                     <input
                                         name="number"
                                         value={formData.number}
                                         onChange={handleInputChange}
                                         placeholder="123"
-                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-12 text-base placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
+                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-11 md:h-12 text-base text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-base font-medium text-gray-700 mb-2">Complemento (Opcional)</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Complemento (Opcional)</label>
                                     <input
                                         name="complement"
                                         value={formData.complement}
                                         onChange={handleInputChange}
                                         placeholder="Ap 101, Bloco C"
-                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-12 text-base focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
+                                        className="w-full rounded-lg border-gray-300 bg-gray-50 px-4 h-11 md:h-12 text-base text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 transition-all outline-none border"
                                     />
                                 </div>
                             </div>
@@ -316,7 +327,7 @@ ${itemsList}
                                         </div>
                                         <div>
                                             <span className="block font-bold text-gray-900 text-lg">Cartão (Pagar na Entrega)</span>
-                                            <span className="text-base text-gray-500">Crédito ou Débito na maquininha</span>
+                                            <span className="text-base text-gray-500">Levamos a maquininha</span>
                                         </div>
                                     </div>
                                     <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${formData.paymentMethod === 'Cartão' ? 'border-emerald-500' : 'border-gray-300'}`}>
@@ -329,7 +340,7 @@ ${itemsList}
                     </div>
 
                     {/* Right Column: Sticky Summary */}
-                    <div className="lg:col-span-4">
+                    <div className="hidden lg:block lg:col-span-4">
                         <OrderSummary 
                             onCheckout={handleCheckout} 
                             loading={loading}
@@ -339,6 +350,25 @@ ${itemsList}
                     
                 </div>
             </main>
+
+            {/* Mobile Footer Fixed */}
+            <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 z-50 lg:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+                <div className="flex items-center justify-between gap-4 max-w-5xl mx-auto">
+                    <div className="flex flex-col">
+                         <span className="text-sm text-gray-500">Total a pagar</span>
+                         <span className="text-2xl font-extrabold text-emerald-600">
+                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice() + 5.90)}
+                         </span>
+                    </div>
+                    <button 
+                        onClick={handleCheckout}
+                        disabled={loading || currentStep !== 2}
+                        className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed h-12 flex items-center justify-center"
+                    >
+                         {loading ? <Loader2 className="animate-spin" /> : 'Finalizar Pedido'}
+                    </button>
+                </div>
+            </div>
         </div>
     )
 }

@@ -21,7 +21,7 @@ export function StepCard({ stepNumber, title, isActive, isCompleted, onEdit, chi
             `}
         >
             {/* Header */}
-            <div className={`p-4 md:p-6 flex items-center justify-between ${isActive ? 'bg-emerald-50/50' : 'bg-white'}`}>
+            <div className={`p-4 md:p-5 flex items-center justify-between ${isActive ? 'bg-emerald-50/50' : 'bg-white'}`}>
                 <div className="flex items-center gap-4">
                     <div 
                         className={`
@@ -49,14 +49,14 @@ export function StepCard({ stepNumber, title, isActive, isCompleted, onEdit, chi
 
             {/* Content Body */}
             <div className={`transition-all duration-300 ease-in-out ${isActive ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-                <div className="p-4 pt-0 border-t border-gray-100/50 mt-2">
+                <div className="p-4 md:p-5 pt-0 border-t border-gray-100/50 mt-2">
                    {children}
                 </div>
             </div>
 
             {/* Summary View (When Completed) */}
             {!isActive && isCompleted && summary && (
-                 <div className="p-4 pt-0 pl-[4.25rem] text-sm text-gray-600">
+                 <div className="p-4 md:p-5 pt-0 pl-[4.25rem] text-sm text-gray-600">
                     {summary}
                  </div>
             )}

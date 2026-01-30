@@ -8,7 +8,7 @@ interface OrderSummaryProps {
     canCheckout: boolean
 }
 
-export function OrderSummary({ onCheckout, loading, canCheckout }: OrderSummaryProps) {
+export function OrderSummary({ onCheckout, loading, canCheckout, hideButton = false }: OrderSummaryProps & { hideButton?: boolean }) {
     const { items, totalPrice } = useCart()
     const subtotal = totalPrice()
     const deliveryFee = 5.90
@@ -49,23 +49,25 @@ export function OrderSummary({ onCheckout, loading, canCheckout }: OrderSummaryP
                 </div>
             </div>
 
-            <button
-                onClick={onCheckout}
-                disabled={loading || !canCheckout}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-                {loading ? (
-                    <>
-                        <Loader2 className="animate-spin" size={20} />
-                        Processando...
-                    </>
-                ) : (
-                    <>
-                        <span>Finalizar Pedido</span>
-                        <ArrowRight size={20} />
-                    </>
-                )}
-            </button>
+            {!hideButton && (
+                <button
+                    onClick={onCheckout}
+                    disabled={loading || !canCheckout}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    {loading ? (
+                        <>
+                            <Loader2 className="animate-spin" size={20} />
+                            Processando...
+                        </>
+                    ) : (
+                        <>
+                            <span>Finalizar Pedido</span>
+                            <ArrowRight size={20} />
+                        </>
+                    )}
+                </button>
+            )}
             <p className="text-xs text-center text-gray-400 mt-3">
                 Ao finalizar, enviaremos o pedido para o WhatsApp da loja.
             </p>
